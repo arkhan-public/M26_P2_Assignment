@@ -43,7 +43,7 @@ namespace InventorySystem.Pages.PurchaseOrders
             PurchaseOrders = PurchaseOrders.OrderByDescending(o => o.OrderDate).ToList();
         }
 
-        // Handler to complete a purchase order from the index list (matches SalesOrders behavior)
+        // Handler to complete a purchase order from the index list
         public async Task<IActionResult> OnPostCompleteAsync(int id)
         {
             if (id <= 0) return BadRequest();

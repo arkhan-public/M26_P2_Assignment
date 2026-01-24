@@ -209,9 +209,6 @@
                 const product = products.find(p => p.id === productId);
                 if (product) {
                     unitPriceInput.value = product.unitPrice.toFixed(2);
-                    // For pending orders we show the current QuantityInStock.
-                    // If you later enable edit for completed orders, compute:
-                    // available = product.QuantityInStock + originalOrderQuantityForThisProduct
                     availableInput.value = product.quantity;
                 } else {
                     availableInput.value = '';
@@ -249,8 +246,6 @@
                 const rowTotal = parseFloat(rowTotalText.replace('$', '')) || 0;
                 total += rowTotal;
             });
-
-            // optionally display total somewhere
         }
     </script>
 }

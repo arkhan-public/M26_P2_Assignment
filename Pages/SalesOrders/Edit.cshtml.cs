@@ -53,9 +53,7 @@ namespace InventorySystem.Pages.SalesOrders
                 return RedirectToPage("./Details", new { id = order.Id });
             }
 
-            // Explicitly assign/preserve the fields we need in the bound model
             SalesOrder = order;
-            // defensive: ensure phone is present in the bound SalesOrder
             if (string.IsNullOrWhiteSpace(SalesOrder.CustomerPhone) && !string.IsNullOrWhiteSpace(order.CustomerPhone))
             {
                 SalesOrder.CustomerPhone = order.CustomerPhone;
@@ -63,7 +61,6 @@ namespace InventorySystem.Pages.SalesOrders
 
             Products = (await _product_service_getall()).ToList();
 
-            // Map existing items into the input model for the form
             Items = SalesOrder.Items
                 .Select(i => new SalesOrderItemInput
                 {
@@ -73,7 +70,6 @@ namespace InventorySystem.Pages.SalesOrders
                 })
                 .ToList();
 
-            // Ensure at least one input row for the UI
             if (Items.Count == 0) Items.Add(new SalesOrderItemInput());
 
             return Page();
@@ -81,7 +77,6 @@ namespace InventorySystem.Pages.SalesOrders
 
         public async Task<IActionResult> OnPostAsync()
         {
-            // Remove any navigation validation noise
             var keysToRemove = ModelState.Keys.Where(k => k.StartsWith("SalesOrder.Items") || k.StartsWith("SalesOrder.Items[")).ToList();
             foreach (var k in keysToRemove) ModelState.Remove(k);
 

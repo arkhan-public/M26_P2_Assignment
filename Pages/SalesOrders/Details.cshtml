@@ -178,7 +178,6 @@
                             }
                             else if (Model.SalesOrder.Status == InventorySystem.Models.SalesOrderStatus.Completed)
                             {
-                                @* Completed: add a Return action linking to the stock page for recording returned stock *@
                                 <a class="btn btn-info btn-sm"
                                    href="/Stock/AddStock?reference=SO:@Model.SalesOrder.OrderNumber"
                                    title="Record Return for this Sales Order">
