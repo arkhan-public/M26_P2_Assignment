@@ -49,16 +49,6 @@ namespace InventorySystem.Pages.SalesOrders
             if (id <= 0) return BadRequest();
 
             var ok = await _salesOrderService.CompleteSalesOrderAsync(id);
-            if (ok)
-            {
-                TempData["SuccessMessage"] = "Sales order marked as completed.";
-            }
-            else
-            {
-                TempData["ErrorMessage"] = "Unable to complete the sales order. Check stock or status.";
-            }
-
-            // Preserve the filter on redirect
             return RedirectToPage("./Index", new { statusFilter = StatusFilter });
         }
     }

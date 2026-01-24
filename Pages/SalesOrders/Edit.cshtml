@@ -11,10 +11,6 @@
                 <h5 class="mb-0"><i class="bi bi-pencil-square"></i> Edit Sales Order</h5>
             </div>
             <div class="card-body">
-                @if (TempData["SuccessMessage"] != null)
-                {
-                    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
-                }
                 <form method="post" id="editSalesOrderForm">
                     <div asp-validation-summary="All" class="text-danger mb-3"></div>
 
