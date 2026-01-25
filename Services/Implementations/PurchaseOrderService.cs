@@ -168,6 +168,39 @@ namespace InventorySystem.Services.Implementations
             }
         }
 
+        public async Task<bool> DeletePurchaseOrderAsync(int id)
+        {
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                var purchaseOrder = await _purchaseRepo.GetByIdWithItemsAsync(id);
+                if (purchaseOrder == null)
+                {
+                    _logger.LogWarning("Attempted to delete non-existing purchase order {Id}", id);
+                    return false;
+                }
+
+                if (purchaseOrder.Status == PurchaseOrderStatus.Completed)
+                {
+                    _logger.LogWarning("Attempted to delete completed purchase order {Id}", id);
+                    return false;
+                }
+
+                await _purchaseRepo.DeleteAsync(purchaseOrder);
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+
+                _logger.LogInformation("Purchase order deleted: {OrderNumber}", purchaseOrder.OrderNumber);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                _logger.LogError(ex, "Error deleting purchase order ID {PurchaseOrderId}", id);
+                return false;
+            }
+        }
+
         public async Task<IEnumerable<PurchaseOrder>> GetPurchaseOrdersBySupplierAsync(int supplierId)
         {
             try

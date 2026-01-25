@@ -10,5 +10,6 @@ namespace InventorySystem.Repositories.Interfaces
         Task<SalesOrder?> GetByIdWithItemsAsync(int id);
         Task AddAsync(SalesOrder order);
         Task AddItemAsync(SalesOrderItem item);
+        Task DeleteAsync(SalesOrder order);
     }
 }

@@ -119,6 +119,16 @@
                                                 </button>
                                             </form>
                                         }
+
+                                        @* Delete available for Pending or Cancelled *@
+                                        @if (order.Status == InventorySystem.Models.PurchaseOrderStatus.Pending
+                                            || order.Status == InventorySystem.Models.PurchaseOrderStatus.Cancelled)
+                                        {
+                                            <a asp-page="./Delete" asp-route-id="@order.Id" class="btn btn-danger btn-sm" title="Delete Order"
+                                               onclick="return confirm('Delete this order? This action cannot be undone.');">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        }
                                     </div>
                                 </td>
                             </tr>

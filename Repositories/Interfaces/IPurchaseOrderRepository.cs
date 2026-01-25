@@ -10,5 +10,6 @@ namespace InventorySystem.Repositories.Interfaces
         Task<PurchaseOrder?> GetByIdWithItemsAsync(int id);
         Task AddAsync(PurchaseOrder order);
         Task AddItemAsync(PurchaseOrderItem item);
+        Task DeleteAsync(PurchaseOrder order);
     }
 }

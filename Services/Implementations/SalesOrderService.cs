@@ -219,5 +219,39 @@ namespace InventorySystem.Services.Implementations
                 return false;
             }
         }
+
+        // New: Delete sales order (only Pending or Cancelled)
+        public async Task<bool> DeleteSalesOrderAsync(int id)
+        {
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                var salesOrder = await _salesRepo.GetByIdWithItemsAsync(id);
+                if (salesOrder == null)
+                {
+                    _logger.LogWarning("Attempted to delete non-existing sales order {Id}", id);
+                    return false;
+                }
+
+                if (salesOrder.Status == SalesOrderStatus.Completed)
+                {
+                    _logger.LogWarning("Attempted to delete completed sales order {Id}", id);
+                    return false;
+                }
+
+                await _salesRepo.DeleteAsync(salesOrder);
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+
+                _logger.LogInformation("Sales order deleted: {OrderNumber}", salesOrder.OrderNumber);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                _logger.LogError(ex, "Error deleting sales order ID {SalesOrderId}", id);
+                return false;
+            }
+        }
     }
 }

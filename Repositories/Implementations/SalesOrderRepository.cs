@@ -43,5 +43,16 @@ namespace InventorySystem.Repositories.Implementations
         {
             await _context.SalesOrderItems.AddAsync(item);
         }
+
+        public Task DeleteAsync(SalesOrder order)
+        {
+            if (order.Items != null && order.Items.Any())
+            {
+                _context.SalesOrderItems.RemoveRange(order.Items);
+            }
+
+            _context.SalesOrders.Remove(order);
+            return Task.CompletedTask;
+        }
     }
 }
